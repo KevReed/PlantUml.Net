@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2043
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlantUml.Net", "src\PlantUml.Net.csproj", "{FE518190-580A-4593-8CDE-EACDCBD53BEF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FE518190-580A-4593-8CDE-EACDCBD53BEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE518190-580A-4593-8CDE-EACDCBD53BEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE518190-580A-4593-8CDE-EACDCBD53BEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE518190-580A-4593-8CDE-EACDCBD53BEF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4E19A1EF-86E3-4384-A181-B38CE1BF34A3}
+	EndGlobalSection
+EndGlobal
