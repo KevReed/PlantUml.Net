@@ -1,4 +1,4 @@
-#PlantUml.Net
+# PlantUml.Net
 
 PlantUml.Net is a .Net wrapper for [PlantUml](http://plantuml.com/)
 
