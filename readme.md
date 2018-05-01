@@ -1,4 +1,5 @@
 # PlantUml.Net
+[![Build status](https://ci.appveyor.com/api/projects/status/228llgqqagi9kutg?svg=true)](https://ci.appveyor.com/project/KevReed/plantuml-net)
 
 PlantUml.Net is a .Net wrapper for [PlantUml](http://plantuml.com/)
 
