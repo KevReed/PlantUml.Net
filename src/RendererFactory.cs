@@ -7,6 +7,11 @@ namespace PlantUml.Net
 {
     public class RendererFactory
     {
+        public IPlantUmlRenderer CreateRenderer()
+        {
+            return CreateRenderer(new PlantUmlSettings());
+        }
+
         public IPlantUmlRenderer CreateRenderer(PlantUmlSettings settings)
         {
             JarRunner jarRunner = CreateJarRunner(settings);
