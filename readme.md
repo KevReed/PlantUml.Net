@@ -15,6 +15,7 @@ Local rendering mode uses a local copy of PlantUml to render diagrams.
 
 Remote rendering mode uses the PlantUml hosted service to render diagrams
 
+
 ## Requirements
 
 ### Java
@@ -30,3 +31,20 @@ Install [GraphViz Dot](https://graphviz.gitlab.io/download/)
 You may need to set the GRAPHVIZ_DOT environment variable
 
 see the [PlantUml documentation](http://plantuml.com/graphviz-dot) for more detailed instructions
+
+## Installation
+
+Add to your project via NuGet
+
+## Usage
+
+```csharp
+
+var factory = new RendererFactory();
+
+var renderer = factory.CreateRenderer(new PlantUmlSettings());
+
+var bytes = renderer.Render("Bob -> Alice : Hello", OutputFormat.Png);
+File.WriteAllBytes("out.png", bytes);
+
+```
