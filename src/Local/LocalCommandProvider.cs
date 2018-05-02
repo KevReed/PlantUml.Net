@@ -28,6 +28,9 @@ namespace PlantUml.Net.Local
                 case OutputFormat.Svg:
                     return "-tsvg";
 
+                case OutputFormat.Png:
+                    return "-tpng";
+
                 case OutputFormat.Eps:
                     return "-teps";
 
@@ -55,9 +58,8 @@ namespace PlantUml.Net.Local
                 case OutputFormat.LaTeX:
                     return "-tlatex";
 
-                case OutputFormat.Png:
                 default:
-                    return "-tpng";
+                    throw new ArgumentException($"unknown {nameof(OutputFormat)} value", nameof(outputFormat));
             }
         }
     }
