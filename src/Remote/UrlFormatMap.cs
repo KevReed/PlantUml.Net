@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PlantUml.Net.Remote
 {
@@ -27,9 +23,21 @@ namespace PlantUml.Net.Remote
 
                     return $"{remoteUrl}svg/{urlComponent}";
 
+                case OutputFormat.Ascii:
+
+                    return $"{remoteUrl}txt/{urlComponent}";
+
+                case OutputFormat.Eps:
+
+                    return $"{remoteUrl}eps/{urlComponent}";
+
+                case OutputFormat.LaTeX:
+
+                    return $"{remoteUrl}latex/{urlComponent}";
+
                 default:
 
-                    throw new NotSupportedException($"OutputFormat {outputFormat} is not supported for remote rendering");
+                    throw new NotSupportedException($"OutputFormat '{outputFormat}' is not supported for remote rendering");
             }
         }
     }
