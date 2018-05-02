@@ -1,5 +1,6 @@
-﻿using System;
-using PlantUml.Net.Java;
+﻿using PlantUml.Net.Java;
+
+using static System.Text.Encoding;
 
 namespace PlantUml.Net.Local
 {
@@ -14,14 +15,15 @@ namespace PlantUml.Net.Local
             this.commandProvider = commandProvider;
         }
 
-        public string Render(string code, OutputFormat outputFormat)
+        public byte[] Render(string code, OutputFormat outputFormat)
         {
             string command = commandProvider.GetCommand(outputFormat);
             var processResult = jarRunner.RunJarWithInput(code, command, "-pipe");
 
             if(processResult.ExitCode != 0)
             {
-                throw new RenderingException(code, processResult.Error);
+                string message = UTF8.GetString(processResult.Error);
+                throw new RenderingException(code, message);
             }
 
             return processResult.Output;

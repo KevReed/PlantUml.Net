@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Net;
 using System.Net.Http;
 using PlantUml.Net.Java;
 using PlantUml.Net.Tools;
+
+using static System.Text.Encoding;
 
 namespace PlantUml.Net.Remote
 {
@@ -16,7 +19,7 @@ namespace PlantUml.Net.Remote
             this.urlFormatMap = urlFormatMap;
         }
 
-        public string Render(string code, OutputFormat outputFormat)
+        public byte[] Render(string code, OutputFormat outputFormat)
         {
             string urlComponent = GetUrlComponent(code);
             string renderUrl = urlFormatMap.GetRenderUrl(urlComponent, outputFormat);
@@ -27,7 +30,13 @@ namespace PlantUml.Net.Remote
 
                 if (result.IsSuccessStatusCode)
                 {
-                    return result.Content.ReadAsStringAsync().Result;
+                    return result.Content.ReadAsByteArrayAsync().Result;
+                }
+
+                if(result.StatusCode == HttpStatusCode.BadRequest)
+                {
+                    var messages = result.Headers.GetValues("X-PlantUML-Diagram-Error");
+                    throw new RenderingException(code, string.Join(Environment.NewLine, messages));
                 }
 
                 throw new HttpRequestException(result.ReasonPhrase);
@@ -40,10 +49,11 @@ namespace PlantUml.Net.Remote
 
             if (processResult.ExitCode != 0)
             {
-                throw new RenderingException(code, processResult.Error);
+                string message = UTF8.GetString(processResult.Error);
+                throw new RenderingException(code, message);
             }
 
-            return processResult.Output;
+            return UTF8.GetString(processResult.Output);
         }
     }
 }

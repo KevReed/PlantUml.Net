@@ -15,19 +15,22 @@ namespace PlantUml.Net.Tools
             }
         }
 
-        public static string GetOutput(this Process process)
+        public static byte[] GetOutput(this Process process)
         {
-            using (StreamReader stdOut = process.StandardOutput)
-            {
-                return stdOut.ReadToEnd();
-            }
+            return ExtractBytes(process.StandardOutput.BaseStream);
         }
 
-        public static string GetErrors(this Process process)
+        public static byte[] GetError(this Process process)
         {
-            using (StreamReader stdErr = process.StandardError)
+            return ExtractBytes(process.StandardError.BaseStream);
+        }
+
+        private static byte[] ExtractBytes(Stream stream)
+        {
+            using (var memoryStream = new MemoryStream())
             {
-                return stdErr.ReadToEnd();
+                stream.CopyTo(memoryStream);
+                return memoryStream.ToArray();
             }
         }
     }

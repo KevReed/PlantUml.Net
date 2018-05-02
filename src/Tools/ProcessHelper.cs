@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Threading.Tasks;
 
 namespace PlantUml.Net.Tools
 {
@@ -15,7 +14,7 @@ namespace PlantUml.Net.Tools
                 return new ProcessResult
                 {
                     Output = process.GetOutput(),
-                    Error = process.GetErrors(),
+                    Error = process.GetError(),
                     ExitCode = process.ExitCode
                 };
             }

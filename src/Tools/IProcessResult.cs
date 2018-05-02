@@ -2,9 +2,9 @@
 {
     public interface IProcessResult
     {
-        string Output { get; }
+        byte[] Output { get; }
 
-        string Error { get; }
+        byte[] Error { get; }
 
         int ExitCode { get; }
     }
