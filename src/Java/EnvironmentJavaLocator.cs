@@ -9,9 +9,7 @@ namespace PlantUml.Net.Java
         {
             string javaHome = Environment.GetEnvironmentVariable("JAVA_HOME").Trim('"');
 
-            return Directory.Exists(javaHome)
-                ? javaHome
-                : null;
+            return Path.Combine(javaHome, "bin", "java.exe");
         }
     }
 }

@@ -2,13 +2,13 @@
 {
     internal class ExplicitJavaLocator: IJavaLocator
     {
-        private readonly string javaHome;
+        private readonly string javaPath;
 
-        public ExplicitJavaLocator(string javaHome)
+        public ExplicitJavaLocator(string javaPath)
         {
-            this.javaHome = javaHome;
+            this.javaPath = javaPath;
         }
 
-        public string GetJavaInstallationPath() => javaHome;        
+        public string GetJavaInstallationPath() => javaPath;        
     }
 }
