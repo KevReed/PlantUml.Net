@@ -12,7 +12,7 @@ namespace PlantUml.Net.Local
 
         public LocalCommandProvider(string localGraphvizDotPath)
         {
-            this.localGraphvizDotPath = localGraphvizDotPath;
+            this.localGraphvizDotPath = $"\"{localGraphvizDotPath}\"";
         }
 
         public string GetCommand(OutputFormat outputFormat)

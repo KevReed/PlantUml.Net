@@ -18,7 +18,7 @@ namespace PlantUml.Net.Java
         public IProcessResult RunJarWithInput(string input, params string[] arguments)
         {
             ValidateJavaPath();
-            var argumentString = $"-jar {jarPath} {string.Join(" ", arguments)}";
+            var argumentString = $"-jar \"{jarPath}\" {string.Join(" ", arguments)}";
             return new ProcessHelper().RunProcessWithInput(javaPath, argumentString, input);
         }
 
