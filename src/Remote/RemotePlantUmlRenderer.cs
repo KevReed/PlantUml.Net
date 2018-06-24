@@ -10,12 +10,10 @@ namespace PlantUml.Net.Remote
 {
     internal class RemotePlantUmlRenderer : IPlantUmlRenderer
     {
-        private readonly JarRunner jarRunner;
         private readonly UrlFormatMap urlFormatMap;
 
-        public RemotePlantUmlRenderer(JarRunner jarRunner, UrlFormatMap urlFormatMap)
+        public RemotePlantUmlRenderer(UrlFormatMap urlFormatMap)
         {
-            this.jarRunner = jarRunner;
             this.urlFormatMap = urlFormatMap;
         }
 
@@ -45,15 +43,7 @@ namespace PlantUml.Net.Remote
 
         private string GetUrlComponent(string code)
         {
-            IProcessResult processResult = jarRunner.RunJarWithInput(code, "-encodeurl", "-pipe");
-
-            if (processResult.ExitCode != 0)
-            {
-                string message = UTF8.GetString(processResult.Error);
-                throw new RenderingException(code, message);
-            }
-
-            return UTF8.GetString(processResult.Output);
+            return PlantUmlTextEncoding.EncodeUrl(code);
         }
     }
 }

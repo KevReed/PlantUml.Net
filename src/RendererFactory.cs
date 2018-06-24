@@ -14,17 +14,16 @@ namespace PlantUml.Net
 
         public IPlantUmlRenderer CreateRenderer(PlantUmlSettings settings)
         {
-            JarRunner jarRunner = CreateJarRunner(settings);
-
             switch (settings.RenderingMode)
             {
                 case RenderingMode.Remote:
 
                     UrlFormatMap urlFormatMap = new UrlFormatMap(settings.RemoteUrl);
-                    return new RemotePlantUmlRenderer(jarRunner, urlFormatMap);
+                    return new RemotePlantUmlRenderer(urlFormatMap);
 
                 case RenderingMode.Local:
 
+                    JarRunner jarRunner = CreateJarRunner(settings);
                     LocalCommandProvider commandProvider = new LocalCommandProvider(settings.LocalGraphvizDotPath);
                     return new LocalPlantUmlRenderer(jarRunner, commandProvider);
 
