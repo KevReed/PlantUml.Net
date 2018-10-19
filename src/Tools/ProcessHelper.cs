@@ -10,7 +10,8 @@ namespace PlantUml.Net.Tools
 
             using (Process process = Process.Start(processStartInfo))
             {
-                process.WriteInput(input);
+                process.WriteInput(input);                
+                process.WaitForExit();
                 return new ProcessResult
                 {
                     Output = process.GetOutput(),
