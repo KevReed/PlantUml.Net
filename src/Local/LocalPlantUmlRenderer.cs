@@ -1,5 +1,6 @@
-﻿using PlantUml.Net.Java;
-
+﻿using System;
+using PlantUml.Net.Java;
+using PlantUml.Net.Remote;
 using static System.Text.Encoding;
 
 namespace PlantUml.Net.Local
@@ -8,11 +9,13 @@ namespace PlantUml.Net.Local
     {
         private readonly JarRunner jarRunner;
         private readonly LocalCommandProvider commandProvider;
+        private readonly RenderUrlCalculator renderUrlCalculator;
 
-        public LocalPlantUmlRenderer(JarRunner jarRunner, LocalCommandProvider commandProvider)
+        public LocalPlantUmlRenderer(JarRunner jarRunner, LocalCommandProvider commandProvider, RenderUrlCalculator renderUrlCalculator)
         {
             this.jarRunner = jarRunner;
             this.commandProvider = commandProvider;
+            this.renderUrlCalculator = renderUrlCalculator;
         }
 
         public byte[] Render(string code, OutputFormat outputFormat)
@@ -27,6 +30,12 @@ namespace PlantUml.Net.Local
             }
 
             return processResult.Output;
+        }
+
+        public Uri RenderAsUri(string code, OutputFormat outputFormat)
+        {
+            string renderUri = renderUrlCalculator.GetRenderUrl(code, outputFormat);
+            return new Uri(renderUri);
         }
     }
 }

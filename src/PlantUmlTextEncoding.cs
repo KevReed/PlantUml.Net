@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace PlantUml.Net
 {
@@ -69,7 +66,6 @@ namespace PlantUml.Net
             r.Append(Encode6bit(c3 & 0x3F));
             r.Append(Encode6bit(c4 & 0x3F));
             return r.ToString();
-
         }
 
         private static char Encode6bit(int b)

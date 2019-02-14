@@ -14,18 +14,20 @@ namespace PlantUml.Net
 
         public IPlantUmlRenderer CreateRenderer(PlantUmlSettings settings)
         {
+            UrlFormatMap urlFormatMap = new UrlFormatMap(settings.RemoteUrl);
+            RenderUrlCalculator renderUrlCalculator = new RenderUrlCalculator(urlFormatMap);
+
             switch (settings.RenderingMode)
             {
                 case RenderingMode.Remote:
 
-                    UrlFormatMap urlFormatMap = new UrlFormatMap(settings.RemoteUrl);
-                    return new RemotePlantUmlRenderer(urlFormatMap);
+                    return new RemotePlantUmlRenderer(renderUrlCalculator);
 
                 case RenderingMode.Local:
 
                     JarRunner jarRunner = CreateJarRunner(settings);
                     LocalCommandProvider commandProvider = new LocalCommandProvider(settings.LocalGraphvizDotPath);
-                    return new LocalPlantUmlRenderer(jarRunner, commandProvider);
+                    return new LocalPlantUmlRenderer(jarRunner, commandProvider, renderUrlCalculator);
 
                 default:
                     throw new ArgumentException("invalid rendering mode", nameof(settings.RenderingMode));
