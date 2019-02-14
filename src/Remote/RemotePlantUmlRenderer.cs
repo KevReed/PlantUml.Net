@@ -1,26 +1,21 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
-using PlantUml.Net.Java;
-using PlantUml.Net.Tools;
-
-using static System.Text.Encoding;
 
 namespace PlantUml.Net.Remote
 {
     internal class RemotePlantUmlRenderer : IPlantUmlRenderer
     {
-        private readonly UrlFormatMap urlFormatMap;
+        private readonly RenderUrlCalculator renderUrlCalculator;
 
-        public RemotePlantUmlRenderer(UrlFormatMap urlFormatMap)
+        public RemotePlantUmlRenderer(RenderUrlCalculator renderUrlCalculator)
         {
-            this.urlFormatMap = urlFormatMap;
+            this.renderUrlCalculator = renderUrlCalculator;
         }
 
         public byte[] Render(string code, OutputFormat outputFormat)
         {
-            string urlComponent = GetUrlComponent(code);
-            string renderUrl = urlFormatMap.GetRenderUrl(urlComponent, outputFormat);
+            string renderUrl = renderUrlCalculator.GetRenderUrl(code, outputFormat);
 
             using (HttpClient httpClient = new HttpClient())
             {
@@ -31,7 +26,7 @@ namespace PlantUml.Net.Remote
                     return result.Content.ReadAsByteArrayAsync().Result;
                 }
 
-                if(result.StatusCode == HttpStatusCode.BadRequest)
+                if (result.StatusCode == HttpStatusCode.BadRequest)
                 {
                     var messages = result.Headers.GetValues("X-PlantUML-Diagram-Error");
                     throw new RenderingException(code, string.Join(Environment.NewLine, messages));
@@ -41,9 +36,10 @@ namespace PlantUml.Net.Remote
             }
         }
 
-        private string GetUrlComponent(string code)
+        public Uri RenderAsUri(string code, OutputFormat outputFormat)
         {
-            return PlantUmlTextEncoding.EncodeUrl(code);
+            string renderUri = renderUrlCalculator.GetRenderUrl(code, outputFormat);
+            return new Uri(renderUri);
         }
     }
 }
