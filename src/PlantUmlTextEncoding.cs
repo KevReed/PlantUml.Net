@@ -8,11 +8,17 @@ namespace PlantUml.Net
     /// <summary>
     /// Provides methods for encoding PlantUML text, as described at http://plantuml.com/text-encoding
     /// </summary>
-    internal static class PlantUmlTextEncoding
+    public static class PlantUmlTextEncoding
     {
         public static string EncodeUrl(string text)
         {
-            return Encode64(Deflate(Encoding.UTF8.GetString(Encoding.Default.GetBytes(text))));
+            return Encode64(Deflate(ConvertToUtf8(text, Encoding.Default)));
+        }
+
+        public static string ConvertToUtf8(string text, Encoding srcEncoding)
+        {
+            var bytes = Encoding.Convert(srcEncoding, Encoding.UTF8, srcEncoding.GetBytes(text));
+            return Encoding.UTF8.GetString(bytes);
         }
 
         private static byte[] Deflate(string text)
