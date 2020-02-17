@@ -19,7 +19,12 @@ namespace PlantUml.Net.Local
             this.renderUrlCalculator = renderUrlCalculator;
         }
 
-        public Task<byte[]> Render(string code, OutputFormat outputFormat)
+        public Task<byte[]> RenderAsync(string code, OutputFormat outputFormat)
+        {
+            return Task.FromResult(Render(code, outputFormat));
+        }
+
+        public byte[] Render(string code, OutputFormat outputFormat)
         {
             string command = commandProvider.GetCommand(outputFormat);
             var processResult = jarRunner.RunJarWithInput(code, command, "-pipe");
@@ -30,7 +35,7 @@ namespace PlantUml.Net.Local
                 throw new RenderingException(code, message);
             }
 
-            return Task.FromResult(processResult.Output);
+            return processResult.Output;
         }
 
         public Uri RenderAsUri(string code, OutputFormat outputFormat)
