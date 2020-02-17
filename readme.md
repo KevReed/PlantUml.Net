@@ -15,7 +15,7 @@ var factory = new RendererFactory();
 
 var renderer = factory.CreateRenderer(new PlantUmlSettings());
 
-var bytes = await renderer.Render("Bob -> Alice : Hello", OutputFormat.Png);
+var bytes = await renderer.RenderAsync("Bob -> Alice : Hello", OutputFormat.Png);
 File.WriteAllBytes("out.png", bytes);
 
 ```
