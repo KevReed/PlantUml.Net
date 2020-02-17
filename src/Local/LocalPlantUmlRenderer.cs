@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using PlantUml.Net.Java;
 using PlantUml.Net.Remote;
 using static System.Text.Encoding;
@@ -16,6 +17,11 @@ namespace PlantUml.Net.Local
             this.jarRunner = jarRunner;
             this.commandProvider = commandProvider;
             this.renderUrlCalculator = renderUrlCalculator;
+        }
+
+        public Task<byte[]> RenderAsync(string code, OutputFormat outputFormat)
+        {
+            return Task.FromResult(Render(code, outputFormat));
         }
 
         public byte[] Render(string code, OutputFormat outputFormat)

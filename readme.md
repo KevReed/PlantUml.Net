@@ -15,7 +15,7 @@ var factory = new RendererFactory();
 
 var renderer = factory.CreateRenderer(new PlantUmlSettings());
 
-var bytes = renderer.Render("Bob -> Alice : Hello", OutputFormat.Png);
+var bytes = await renderer.RenderAsync("Bob -> Alice : Hello", OutputFormat.Png);
 File.WriteAllBytes("out.png", bytes);
 
 ```
@@ -27,6 +27,16 @@ PlantUml.Net can render in 2 modes, [Local](#Local) and [Remote](#Remote).
 ### Remote Rendering (default)
 
 Remote rendering mode uses the PlantUml hosted service to render diagrams.
+
+#### Docker
+
+You can also spin your own PlantUml server using docker.
+
+```bash
+docker run -d -p 8080:8080 plantuml/plantuml-server:jetty
+```
+
+Now you can use the remote rendering with http://localhost:8080 as url.
 
 ### Local Rendering
 
