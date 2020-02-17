@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using PlantUml.Net.Java;
 using PlantUml.Net.Remote;
 using static System.Text.Encoding;
@@ -18,7 +19,7 @@ namespace PlantUml.Net.Local
             this.renderUrlCalculator = renderUrlCalculator;
         }
 
-        public byte[] Render(string code, OutputFormat outputFormat)
+        public Task<byte[]> Render(string code, OutputFormat outputFormat)
         {
             string command = commandProvider.GetCommand(outputFormat);
             var processResult = jarRunner.RunJarWithInput(code, command, "-pipe");
@@ -29,7 +30,7 @@ namespace PlantUml.Net.Local
                 throw new RenderingException(code, message);
             }
 
-            return processResult.Output;
+            return Task.FromResult(processResult.Output);
         }
 
         public Uri RenderAsUri(string code, OutputFormat outputFormat)
