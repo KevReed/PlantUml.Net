@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace PlantUml.Net.Remote
 {
@@ -11,34 +12,41 @@ namespace PlantUml.Net.Remote
             this.remoteUrl = remoteUrl;
         }
 
-        public string GetRenderUrl(string urlComponent, OutputFormat outputFormat)
+        public Uri GetRenderUrl(string urlComponent, OutputFormat outputFormat)
         {
+            var baseUri = new Uri(remoteUrl);
+            
             switch (outputFormat)
             {
                 case OutputFormat.Png:
 
-                    return $"{remoteUrl}png/{urlComponent}";
+                    return AppendPath(baseUri, "png", urlComponent);
 
                 case OutputFormat.Svg:
 
-                    return $"{remoteUrl}svg/{urlComponent}";
+                    return AppendPath(baseUri, "svg", urlComponent);
 
                 case OutputFormat.Ascii:
 
-                    return $"{remoteUrl}txt/{urlComponent}";
+                    return AppendPath(baseUri, "txt", urlComponent);
 
                 case OutputFormat.Eps:
 
-                    return $"{remoteUrl}eps/{urlComponent}";
+                    return AppendPath(baseUri, "eps", urlComponent);
 
                 case OutputFormat.LaTeX:
 
-                    return $"{remoteUrl}latex/{urlComponent}";
+                    return AppendPath(baseUri, "latex", urlComponent);
 
                 default:
 
                     throw new NotSupportedException($"OutputFormat '{outputFormat}' is not supported for remote rendering");
             }
+        }
+
+        private static Uri AppendPath(Uri uri, params string[] paths)
+        {
+            return new Uri(paths.Aggregate(uri.AbsoluteUri, (current, path) => $"{current.TrimEnd('/','\\')}/{path.TrimStart('/')}"));
         }
     }
 }
