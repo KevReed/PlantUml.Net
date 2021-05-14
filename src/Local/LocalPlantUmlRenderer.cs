@@ -40,8 +40,7 @@ namespace PlantUml.Net.Local
 
         public Uri RenderAsUri(string code, OutputFormat outputFormat)
         {
-            string renderUri = renderUrlCalculator.GetRenderUrl(code, outputFormat);
-            return new Uri(renderUri);
+            return renderUrlCalculator.GetRenderUrl(code, outputFormat);
         }
     }
 }

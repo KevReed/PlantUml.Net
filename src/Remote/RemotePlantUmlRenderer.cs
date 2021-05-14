@@ -16,7 +16,7 @@ namespace PlantUml.Net.Remote
 
         public async Task<byte[]> RenderAsync(string code, OutputFormat outputFormat)
         {
-            string renderUrl = renderUrlCalculator.GetRenderUrl(code, outputFormat);
+            var renderUrl = renderUrlCalculator.GetRenderUrl(code, outputFormat);
 
             using (HttpClient httpClient = new HttpClient())
             {
@@ -44,8 +44,7 @@ namespace PlantUml.Net.Remote
 
         public Uri RenderAsUri(string code, OutputFormat outputFormat)
         {
-            string renderUri = renderUrlCalculator.GetRenderUrl(code, outputFormat);
-            return new Uri(renderUri);
+            return renderUrlCalculator.GetRenderUrl(code, outputFormat);
         }
     }
 }
