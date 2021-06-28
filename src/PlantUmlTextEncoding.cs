@@ -12,7 +12,7 @@ namespace PlantUml.Net
     {
         public static string EncodeUrl(string text)
         {
-            return Encode64(Deflate(Encoding.UTF8.GetString(Encoding.Default.GetBytes(text))));
+            return Encode64(Deflate(text));
         }
 
         private static byte[] Deflate(string text)
