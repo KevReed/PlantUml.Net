@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using PlantUml.Net.Java;
 using PlantUml.Net.Remote;
-using static System.Text.Encoding;
 
 namespace PlantUml.Net.Local
 {
@@ -19,23 +20,25 @@ namespace PlantUml.Net.Local
             this.renderUrlCalculator = renderUrlCalculator;
         }
 
-        public Task<byte[]> RenderAsync(string code, OutputFormat outputFormat)
-        {
-            return Task.FromResult(Render(code, outputFormat));
-        }
-
-        public byte[] Render(string code, OutputFormat outputFormat)
+        public async Task<byte[]> RenderAsync(string code, OutputFormat outputFormat, CancellationToken cancellationToken)
         {
             string command = commandProvider.GetCommand(outputFormat);
-            var processResult = jarRunner.RunJarWithInput(code, command, "-pipe");
-
-            if(processResult.ExitCode != 0)
+            var processResult = await jarRunner.RunJarWithInputAsync(code, cancellationToken, command, "-pipe")
+                .ConfigureAwait(false);
+            System.Diagnostics.Debug.WriteLine("Render finished!!!");
+            if (processResult.ExitCode != 0)
             {
-                string message = UTF8.GetString(processResult.Error);
+                System.Diagnostics.Debug.WriteLine("Failed to render!!!");
+                string message = Encoding.UTF8.GetString(processResult.Error);
                 throw new RenderingException(code, message);
             }
 
             return processResult.Output;
+        }
+
+        public byte[] Render(string code, OutputFormat outputFormat)
+        {
+            return RenderAsync(code, outputFormat, CancellationToken.None).GetAwaiter().GetResult();
         }
 
         public Uri RenderAsUri(string code, OutputFormat outputFormat)
