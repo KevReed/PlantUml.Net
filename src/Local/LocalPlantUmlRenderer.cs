@@ -25,10 +25,8 @@ namespace PlantUml.Net.Local
             string command = commandProvider.GetCommand(outputFormat);
             var processResult = await jarRunner.RunJarWithInputAsync(code, cancellationToken, command, "-pipe")
                 .ConfigureAwait(false);
-            System.Diagnostics.Debug.WriteLine("Render finished!!!");
             if (processResult.ExitCode != 0)
             {
-                System.Diagnostics.Debug.WriteLine("Failed to render!!!");
                 string message = Encoding.UTF8.GetString(processResult.Error);
                 throw new RenderingException(code, message);
             }

@@ -22,7 +22,6 @@ namespace PlantUml.Net.Java
         {
             ValidateJavaPath();
             var argumentString = $"-jar \"{jarPath}\" {string.Join(" ", arguments)}";
-            System.Diagnostics.Debug.WriteLine(argumentString);
             return await new ProcessHelper().RunProcessWithInputAsync(javaPath, argumentString, input, cancellationToken)
                 .ConfigureAwait(false);
         }
