@@ -6,7 +6,7 @@ namespace PlantUml.Net
 {
     public interface IPlantUmlRenderer
     {
-        Task<byte[]> RenderAsync(string code, OutputFormat outputFormat, CancellationToken cancellationToken);
+        Task<byte[]> RenderAsync(string code, OutputFormat outputFormat, CancellationToken cancellationToken = default);
 
         byte[] Render(string code, OutputFormat outputFormat);
 
