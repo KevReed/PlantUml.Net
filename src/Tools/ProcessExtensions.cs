@@ -11,7 +11,6 @@ namespace PlantUml.Net.Tools
             {
                 stdIn.AutoFlush = true;
                 stdIn.Write(input);
-                stdIn.Close();
             }
         }
 
