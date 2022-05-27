@@ -1,22 +1,46 @@
 ﻿using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace PlantUml.Net.Tools
 {
     internal class ProcessHelper
     {
-        public IProcessResult RunProcessWithInput(string fileName, string arguments, string input)
+        public async Task<IProcessResult> RunProcessWithInputAsync(string fileName, string arguments, string input, CancellationToken cancellationToken)
         {
-            ProcessStartInfo processStartInfo = GetProcessStartInfo(fileName, arguments);
-
-            using (Process process = Process.Start(processStartInfo))
+            using (Process process = new Process()
             {
-                process.WriteInput(input);
-                return new ProcessResult
+                StartInfo = GetProcessStartInfo(fileName, arguments),
+                EnableRaisingEvents = true
+            })
+            {
+                var tcs = new TaskCompletionSource<ProcessResult>();
+                if (cancellationToken != CancellationToken.None)
                 {
-                    Output = process.GetOutput(),
-                    Error = process.GetError(),
-                    ExitCode = process.ExitCode
-                };
+                    cancellationToken.Register(() =>
+                    {
+                        if (tcs.TrySetCanceled())
+                        {
+                            process.Kill();
+                        }
+                    });
+                }
+
+                process.Start();
+                process.WriteInput(input);
+
+                Task.Run(() =>
+                {
+                    ProcessResult result = new ProcessResult
+                    {
+                        Output = process.GetOutput(),
+                        Error = process.GetError(),
+                        ExitCode = process.ExitCode
+                    };
+                    tcs.SetResult(result);
+                });
+
+                return await tcs.Task.ConfigureAwait(false);
             }
         }
 
@@ -30,7 +54,9 @@ namespace PlantUml.Net.Tools
                 WindowStyle = ProcessWindowStyle.Hidden,
                 UseShellExecute = false,
                 CreateNoWindow = true,
-                Arguments = arguments
+                Arguments = arguments,
+                StandardErrorEncoding = System.Text.Encoding.UTF8,
+                StandardOutputEncoding = System.Text.Encoding.UTF8
             };
         }
     }

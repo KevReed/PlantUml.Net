@@ -8,11 +8,11 @@ namespace PlantUml.Net.Local
 
         private string GraphvizDotCommand => string.IsNullOrEmpty(localGraphvizDotPath)
             ? string.Empty
-            : $" -graphvizdot {localGraphvizDotPath}";
+            : $" -graphvizdot \"{localGraphvizDotPath}\"";
 
         public LocalCommandProvider(string localGraphvizDotPath)
         {
-            this.localGraphvizDotPath = $"\"{localGraphvizDotPath}\"";
+            this.localGraphvizDotPath = localGraphvizDotPath;
         }
 
         public string GetCommand(OutputFormat outputFormat)

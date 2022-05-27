@@ -1,5 +1,7 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
+
 using PlantUml.Net.Tools;
 
 namespace PlantUml.Net.Java
@@ -15,21 +17,12 @@ namespace PlantUml.Net.Java
             this.jarPath = jarPath;
         }
 
-        public IProcessResult RunJarWithInput(string input, params string[] arguments)
+        public async Task<IProcessResult> RunJarWithInputAsync(string input, CancellationToken cancellationToken,
+            params string[] arguments)
         {
-            ValidateJavaPath();
-            var argumentString = $"-jar \"{jarPath}\" {string.Join(" ", arguments)}";
-            return new ProcessHelper().RunProcessWithInput(javaPath, argumentString, input);
-        }
-
-        private void ValidateJavaPath()
-        {
-            if (File.Exists(javaPath))
-            {
-                return;
-            }
-
-            throw new FileNotFoundException("Unable to locate java.exe, check your JAVA_HOME environment variable or specify JavaPath in PlantUmlSettings.");
+            var argumentString = $"-Dfile.encoding=UTF-8 -jar \"{jarPath}\" {string.Join(" ", arguments)}";
+            return await new ProcessHelper().RunProcessWithInputAsync(javaPath, argumentString, input, cancellationToken)
+                .ConfigureAwait(false);
         }
     }
 }

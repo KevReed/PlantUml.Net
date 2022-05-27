@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace PlantUml.Net.Remote
@@ -14,13 +15,13 @@ namespace PlantUml.Net.Remote
             this.renderUrlCalculator = renderUrlCalculator;
         }
 
-        public async Task<byte[]> RenderAsync(string code, OutputFormat outputFormat)
+        public async Task<byte[]> RenderAsync(string code, OutputFormat outputFormat, CancellationToken cancellationToken = default)
         {
             var renderUrl = renderUrlCalculator.GetRenderUrl(code, outputFormat);
 
             using (HttpClient httpClient = new HttpClient())
             {
-                var result = await httpClient.GetAsync(renderUrl).ConfigureAwait(false);
+                var result = await httpClient.GetAsync(renderUrl, cancellationToken).ConfigureAwait(false);
 
                 if (result.IsSuccessStatusCode)
                 {
