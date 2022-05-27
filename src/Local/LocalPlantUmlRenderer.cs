@@ -36,7 +36,7 @@ namespace PlantUml.Net.Local
 
         public byte[] Render(string code, OutputFormat outputFormat)
         {
-            return RenderAsync(code, outputFormat, CancellationToken.None).GetAwaiter().GetResult();
+            return RenderAsync(code, outputFormat).GetAwaiter().GetResult();
         }
 
         public Uri RenderAsUri(string code, OutputFormat outputFormat)

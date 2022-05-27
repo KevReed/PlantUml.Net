@@ -20,20 +20,9 @@ namespace PlantUml.Net.Java
         public async Task<IProcessResult> RunJarWithInputAsync(string input, CancellationToken cancellationToken,
             params string[] arguments)
         {
-            ValidateJavaPath();
-            var argumentString = $"-jar \"{jarPath}\" {string.Join(" ", arguments)}";
+            var argumentString = $"-Dfile.encoding=UTF-8 -jar \"{jarPath}\" {string.Join(" ", arguments)}";
             return await new ProcessHelper().RunProcessWithInputAsync(javaPath, argumentString, input, cancellationToken)
                 .ConfigureAwait(false);
-        }
-
-        private void ValidateJavaPath()
-        {
-            if (File.Exists(javaPath))
-            {
-                return;
-            }
-
-            throw new FileNotFoundException("Unable to locate java.exe, check your JAVA_HOME environment variable or specify JavaPath in PlantUmlSettings.");
         }
     }
 }

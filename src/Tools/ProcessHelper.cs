@@ -54,7 +54,9 @@ namespace PlantUml.Net.Tools
                 WindowStyle = ProcessWindowStyle.Hidden,
                 UseShellExecute = false,
                 CreateNoWindow = true,
-                Arguments = arguments
+                Arguments = arguments,
+                StandardErrorEncoding = System.Text.Encoding.UTF8,
+                StandardOutputEncoding = System.Text.Encoding.UTF8
             };
         }
     }

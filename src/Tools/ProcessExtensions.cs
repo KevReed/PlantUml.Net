@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.IO;
+using System.Text;
 
 namespace PlantUml.Net.Tools
 {
@@ -7,7 +8,7 @@ namespace PlantUml.Net.Tools
     {
         public static void WriteInput(this Process process, string input)
         {
-            using (StreamWriter stdIn = process.StandardInput)
+            using (StreamWriter stdIn = new StreamWriter(process.StandardInput.BaseStream, Encoding.UTF8))
             {
                 stdIn.AutoFlush = true;
                 stdIn.Write(input);
