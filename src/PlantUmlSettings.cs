@@ -21,6 +21,11 @@
         public string LocalPlantUmlPath { get; set; }
 
         /// <summary>
+        /// Format of the error output.
+        /// </summary>
+        public ErrorReportMode ErrorReportMode { get; set; }
+
+        /// <summary>
         /// Path to dot.exe.
         /// Required for Local rendering mode.
         /// </summary>
@@ -31,6 +36,12 @@
         /// Defaults to Remote.
         /// </summary>
         public RenderingMode RenderingMode { get; set; }
+
+        /// <summary>
+        /// Separators between diagrams if multiple diagrams are generated.
+        /// This way it can be determined can determine where one image ends and another starts.
+        /// </summary>
+        public string Delimitor { get; set; }
 
         public PlantUmlSettings()
         {
