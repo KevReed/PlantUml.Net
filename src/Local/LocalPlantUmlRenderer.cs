@@ -23,7 +23,7 @@ namespace PlantUml.Net.Local
         public async Task<byte[]> RenderAsync(string code, OutputFormat outputFormat, CancellationToken cancellationToken = default)
         {
             string command = commandProvider.GetCommand(outputFormat);
-            var processResult = await jarRunner.RunJarWithInputAsync(code, cancellationToken, command, "-pipe")
+            var processResult = await jarRunner.RunJarWithInputAsync(code, cancellationToken, command, "-pipe", "-charset UTF-8")
                 .ConfigureAwait(false);
             if (processResult.ExitCode != 0)
             {
