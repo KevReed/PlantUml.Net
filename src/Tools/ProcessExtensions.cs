@@ -8,7 +8,7 @@ namespace PlantUml.Net.Tools
     {
         public static void WriteInput(this Process process, string input)
         {
-            using (StreamWriter stdIn = new StreamWriter(process.StandardInput.BaseStream, Encoding.UTF8))
+            using (StreamWriter stdIn = new StreamWriter(process.StandardInput.BaseStream, new UTF8Encoding(false)))
             {
                 stdIn.AutoFlush = true;
                 stdIn.Write(input);

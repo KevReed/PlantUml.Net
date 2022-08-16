@@ -4,21 +4,50 @@ namespace PlantUml.Net.Local
 {
     internal class LocalCommandProvider
     {
-        private string localGraphvizDotPath;
+        private readonly ErrorReportMode errorReportMode;
+        private readonly string localGraphvizDotPath;
+        private readonly string delimitor;
 
-        private string GraphvizDotCommand => string.IsNullOrEmpty(localGraphvizDotPath)
+        private string ErrorReportModeCommand
+        {
+            get
+            {
+                switch (errorReportMode)
+                {
+                    case ErrorReportMode.TwoLines:
+                        return "";
+                    case ErrorReportMode.SingleLine:
+                        return " -stdrpt:2";
+                    case ErrorReportMode.Verbose:
+                        return " -stdrpt:1";
+                    default:
+                        throw new ArgumentException($"Unknown {nameof(ErrorReportMode)} value", nameof(errorReportMode));
+                }
+            }
+        }
+
+    private string GraphvizDotCommand => string.IsNullOrEmpty(localGraphvizDotPath)
             ? string.Empty
             : $" -graphvizdot \"{localGraphvizDotPath}\"";
 
-        public LocalCommandProvider(string localGraphvizDotPath)
+        private string DelimitorCommand => string.IsNullOrEmpty(delimitor)
+            ? string.Empty
+            : $" -pipedelimitor \"{delimitor}\"";
+
+        public LocalCommandProvider(PlantUmlSettings settings)
         {
-            this.localGraphvizDotPath = localGraphvizDotPath;
+            errorReportMode = settings.ErrorReportMode;
+            localGraphvizDotPath = settings.LocalGraphvizDotPath;
+            delimitor = settings.Delimitor;
         }
 
         public string GetCommand(OutputFormat outputFormat)
         {
             string outputFormatCommand = GetOuputFormatCommand(outputFormat);
-            return outputFormatCommand + GraphvizDotCommand;
+            outputFormatCommand += ErrorReportModeCommand;
+            outputFormatCommand += GraphvizDotCommand;
+            outputFormatCommand += DelimitorCommand;
+            return outputFormatCommand;
         }
 
         private string GetOuputFormatCommand(OutputFormat outputFormat)
@@ -59,7 +88,7 @@ namespace PlantUml.Net.Local
                     return "-tlatex";
 
                 default:
-                    throw new ArgumentException($"unknown {nameof(OutputFormat)} value", nameof(outputFormat));
+                    throw new ArgumentException($"Unknown {nameof(OutputFormat)} value", nameof(outputFormat));
             }
         }
     }

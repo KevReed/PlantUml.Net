@@ -13,6 +13,11 @@ namespace PlantUml.Net.Java
 
         public JarRunner(string javaPath, string jarPath)
         {
+            if (!File.Exists(javaPath))
+            {
+                throw new JavaNotFoundException($"Java executable '{javaPath}' does not exist");
+            }
+
             this.javaPath = javaPath;
             this.jarPath = jarPath;
         }
