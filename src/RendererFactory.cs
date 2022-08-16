@@ -26,11 +26,11 @@ namespace PlantUml.Net
                 case RenderingMode.Local:
 
                     JarRunner jarRunner = CreateJarRunner(settings);
-                    LocalCommandProvider commandProvider = new LocalCommandProvider(settings.LocalGraphvizDotPath);
+                    LocalCommandProvider commandProvider = new LocalCommandProvider(settings);
                     return new LocalPlantUmlRenderer(jarRunner, commandProvider, renderUrlCalculator);
 
                 default:
-                    throw new ArgumentException("invalid rendering mode", nameof(settings.RenderingMode));
+                    throw new ArgumentException("Invalid rendering mode", nameof(settings.RenderingMode));
             }
         }
 
