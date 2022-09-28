@@ -43,6 +43,11 @@
         /// </summary>
         public string Delimitor { get; set; }
 
+        /// <summary>
+        /// To generate the Nth image
+        /// </summary>
+        public int ImageIndex { get; set; }
+
         public PlantUmlSettings()
         {
             RenderingMode = RenderingMode.Remote;
