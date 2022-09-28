@@ -28,8 +28,8 @@ namespace PlantUml.Net.Local
         }
 
         private string GraphvizDotCommand => string.IsNullOrEmpty(localGraphvizDotPath)
-                ? string.Empty
-                : $" -graphvizdot \"{localGraphvizDotPath}\"";
+            ? string.Empty
+            : $" -graphvizdot \"{localGraphvizDotPath}\"";
 
         private string DelimitorCommand => string.IsNullOrEmpty(delimitor)
             ? string.Empty
