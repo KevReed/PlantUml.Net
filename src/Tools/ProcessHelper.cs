@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -21,7 +22,14 @@ namespace PlantUml.Net.Tools
                     {
                         if (tcs.TrySetCanceled())
                         {
-                            process.Kill();
+                            try
+                            {
+                                process.Kill();
+                            }
+                            catch (ArgumentNullException)
+                            {
+                                //Catch potential ArgumentNullException: SafeHandle cannot be null
+                            }
                         }
                     });
                 }
@@ -29,7 +37,7 @@ namespace PlantUml.Net.Tools
                 process.Start();
                 process.WriteInput(input);
 
-                Task.Run(() =>
+                _ = Task.Run(() =>
                 {
                     ProcessResult result = new ProcessResult
                     {
