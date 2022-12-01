@@ -38,6 +38,11 @@
         public RenderingMode RenderingMode { get; set; }
 
         /// <summary>
+        /// Include a file as if '!include file' were used, also allowing pattern like '*.puml'
+        /// </summary>
+        public string Include { get; set; }
+
+        /// <summary>
         /// Separators between diagrams if multiple diagrams are generated.
         /// This way it can be determined can determine where one image ends and another starts.
         /// </summary>
