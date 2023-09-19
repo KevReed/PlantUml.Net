@@ -4,27 +4,32 @@ using System.Threading;
 using System.Threading.Tasks;
 using PlantUml.Net.Java;
 using PlantUml.Net.Remote;
+using PlantUml.Net.Tools;
 
 namespace PlantUml.Net.Local
 {
     internal class LocalPlantUmlRenderer : IPlantUmlRenderer
     {
         private readonly JarRunner jarRunner;
+        private readonly string workingDirectory;
         private readonly LocalCommandProvider commandProvider;
         private readonly RenderUrlCalculator renderUrlCalculator;
 
-        public LocalPlantUmlRenderer(JarRunner jarRunner, LocalCommandProvider commandProvider, RenderUrlCalculator renderUrlCalculator)
+        public LocalPlantUmlRenderer(JarRunner jarRunner, string workingDirectory,
+            LocalCommandProvider commandProvider, RenderUrlCalculator renderUrlCalculator)
         {
             this.jarRunner = jarRunner;
+            this.workingDirectory = workingDirectory;
             this.commandProvider = commandProvider;
             this.renderUrlCalculator = renderUrlCalculator;
         }
 
-        public async Task<byte[]> RenderAsync(string code, OutputFormat outputFormat, CancellationToken cancellationToken = default)
+        public async Task<byte[]> RenderAsync(string code, OutputFormat outputFormat,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             string command = commandProvider.GetCommand(outputFormat);
-            var processResult = await jarRunner.RunJarWithInputAsync(code, cancellationToken, command, "-pipe", "-charset UTF-8")
-                .ConfigureAwait(false);
+            IProcessResult processResult = await jarRunner.RunJarWithInputAsync(workingDirectory, code,
+                cancellationToken, command, "-pipe", "-charset UTF-8").ConfigureAwait(false);
             if (processResult.ExitCode != 0)
             {
                 string message = Encoding.UTF8.GetString(processResult.Error);

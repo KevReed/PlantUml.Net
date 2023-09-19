@@ -6,7 +6,9 @@ namespace PlantUml.Net.Local
     {
         private readonly ErrorReportMode errorReportMode;
         private readonly string localGraphvizDotPath;
+        private readonly string include;
         private readonly string delimitor;
+        private readonly int imageIndex;
 
         private string ErrorReportModeCommand
         {
@@ -26,19 +28,27 @@ namespace PlantUml.Net.Local
             }
         }
 
-    private string GraphvizDotCommand => string.IsNullOrEmpty(localGraphvizDotPath)
+        private string GraphvizDotCommand => string.IsNullOrEmpty(localGraphvizDotPath)
             ? string.Empty
             : $" -graphvizdot \"{localGraphvizDotPath}\"";
+
+        private string IncludeCommand => string.IsNullOrEmpty(include)
+            ? string.Empty
+            : $" \"-I{include}\"";
 
         private string DelimitorCommand => string.IsNullOrEmpty(delimitor)
             ? string.Empty
             : $" -pipedelimitor \"{delimitor}\"";
 
+        private string ImageIndexCommand => $" -pipeimageindex {imageIndex}";
+
         public LocalCommandProvider(PlantUmlSettings settings)
         {
             errorReportMode = settings.ErrorReportMode;
             localGraphvizDotPath = settings.LocalGraphvizDotPath;
+            include = settings.Include;
             delimitor = settings.Delimitor;
+            imageIndex = settings.ImageIndex;
         }
 
         public string GetCommand(OutputFormat outputFormat)
@@ -46,7 +56,9 @@ namespace PlantUml.Net.Local
             string outputFormatCommand = GetOuputFormatCommand(outputFormat);
             outputFormatCommand += ErrorReportModeCommand;
             outputFormatCommand += GraphvizDotCommand;
+            outputFormatCommand += IncludeCommand;
             outputFormatCommand += DelimitorCommand;
+            outputFormatCommand += ImageIndexCommand;
             return outputFormatCommand;
         }
 
