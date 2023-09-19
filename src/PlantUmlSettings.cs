@@ -43,6 +43,12 @@
         public string Include { get; set; }
 
         /// <summary>
+        /// The working directory to use which may is needed for relative includes.
+        /// Defaults to null to use the applications executable directory.
+        /// </summary>
+        public string WorkingDirectory { get; set; }
+
+        /// <summary>
         /// Separators between diagrams if multiple diagrams are generated.
         /// This way it can be determined can determine where one image ends and another starts.
         /// </summary>

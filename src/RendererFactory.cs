@@ -27,7 +27,7 @@ namespace PlantUml.Net
 
                     JarRunner jarRunner = CreateJarRunner(settings);
                     LocalCommandProvider commandProvider = new LocalCommandProvider(settings);
-                    return new LocalPlantUmlRenderer(jarRunner, commandProvider, renderUrlCalculator);
+                    return new LocalPlantUmlRenderer(jarRunner, settings.WorkingDirectory, commandProvider, renderUrlCalculator);
 
                 default:
                     throw new ArgumentException("Invalid rendering mode", nameof(settings.RenderingMode));

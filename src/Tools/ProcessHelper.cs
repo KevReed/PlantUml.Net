@@ -7,11 +7,12 @@ namespace PlantUml.Net.Tools
 {
     internal class ProcessHelper
     {
-        public async Task<IProcessResult> RunProcessWithInputAsync(string fileName, string arguments, string input, CancellationToken cancellationToken)
+        public async Task<IProcessResult> RunProcessWithInputAsync(string fileName, string arguments, string workingDirectory,
+            string input, CancellationToken cancellationToken)
         {
             using (Process process = new Process()
             {
-                StartInfo = GetProcessStartInfo(fileName, arguments),
+                StartInfo = GetProcessStartInfo(fileName, arguments, workingDirectory),
                 EnableRaisingEvents = true
             })
             {
@@ -52,7 +53,7 @@ namespace PlantUml.Net.Tools
             }
         }
 
-        private static ProcessStartInfo GetProcessStartInfo(string command, string arguments)
+        private static ProcessStartInfo GetProcessStartInfo(string command, string arguments, string workingDirectory)
         {
             return new ProcessStartInfo(command)
             {
@@ -64,7 +65,8 @@ namespace PlantUml.Net.Tools
                 CreateNoWindow = true,
                 Arguments = arguments,
                 StandardErrorEncoding = System.Text.Encoding.UTF8,
-                StandardOutputEncoding = System.Text.Encoding.UTF8
+                StandardOutputEncoding = System.Text.Encoding.UTF8,
+                WorkingDirectory = workingDirectory
             };
         }
     }

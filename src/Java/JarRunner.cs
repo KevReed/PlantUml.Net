@@ -22,12 +22,12 @@ namespace PlantUml.Net.Java
             this.jarPath = jarPath;
         }
 
-        public async Task<IProcessResult> RunJarWithInputAsync(string input, CancellationToken cancellationToken,
-            params string[] arguments)
+        public async Task<IProcessResult> RunJarWithInputAsync(string input, string workingDirectory,
+            CancellationToken cancellationToken, params string[] arguments)
         {
             var argumentString = $"-Dfile.encoding=UTF-8 -jar \"{jarPath}\" {string.Join(" ", arguments)}";
-            return await new ProcessHelper().RunProcessWithInputAsync(javaPath, argumentString, input, cancellationToken)
-                .ConfigureAwait(false);
+            return await new ProcessHelper().RunProcessWithInputAsync(javaPath, argumentString,
+                input, workingDirectory, cancellationToken).ConfigureAwait(false);
         }
     }
 }
